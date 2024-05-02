@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:raccoon/Pages/register.dart';
 import 'package:raccoon/raccoon.dart';
 
 class LoginPage extends StatefulWidget {
@@ -134,7 +135,16 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   const Text("Don't have an account?"),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return const RegisterPage();
+                          },
+                        ),
+                      );
+                    },
                     child: const Text("Register"),
                   ),
                 ],
