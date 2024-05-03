@@ -1,28 +1,70 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:video_player/video_player.dart';
 
-class Raccoon extends StatefulWidget {
-  const Raccoon({super.key});
+class Yes extends StatefulWidget {
+  const Yes({super.key});
 
   @override
-  State<Raccoon> createState() => _RaccoonState();
+  State<Yes> createState() => _YesState();
 }
 
-class _RaccoonState extends State<Raccoon> {
+class _YesState extends State<Yes> {
+  late VideoPlayerController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _initializeController();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _initializeController() async {
+    // _controller = VideoPlayerController.asset(
+
+    //   //videoPlayerOptions: VideoPlayerOptions(mixWithOthers: true),
+    // );
+
+    await _controller.initialize();
+    _controller.setLooping(true);
+
+    if (mounted) {
+      setState(() {});
+    }
+
+    _controller.play();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black26,
-      body: Center(
-        child: Container(
-          height: 300,
-          width: 300,
-          // alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.circular(150),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.black,
+        body: Stack(children: [
+          Center(
+            child: _controller.value.isInitialized
+                ? AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: VideoPlayer(_controller),
+                  )
+                : const CircularProgressIndicator(),
           ),
-        ),
+          const Align(
+            heightFactor: 11,
+            child: Text(
+              'Will meet you soon!',
+              style: TextStyle(
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontStyle: FontStyle.italic),
+            ),
+          ),
+        ]),
       ),
     );
   }
